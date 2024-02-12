@@ -12,7 +12,7 @@ On [line 36](https://github.com/NotScottt/Python-Weather-API/blob/c13c998a256b79
 
 ### Possible API calls
 ``` 
-http://localhost:5000/weather/current?day=0)http://127.0.0.1:5000/weather/current?day=0
+http://localhost:5000/weather/current?day=0
 ```
 <details>
   <summary>result</summary>
@@ -28,7 +28,7 @@ http://localhost:5000/weather/current?day=0)http://127.0.0.1:5000/weather/curren
 </details>
 
 ``` 
-http://localhost:5000/weather/current?day=0)http://127.0.0.1:5000/weather/current?day=0
+http://localhost:5000/weather/all
 ```
 <details>
   <summary>result</summary>
