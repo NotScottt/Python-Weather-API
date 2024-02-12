@@ -20,20 +20,31 @@ def getConditionNow():
     ]
     return items[3]
 
+
+def get_element(className, elementNum):
+    items = [
+        item.get_text(strip=True) for item in doc.find_all(class_=className)
+    ]
+    if elementNum == None:
+        return items
+    else:
+        return items[elementNum]
+
+
 def return_days(**kwargs):
     when=kwargs.get("when", None)
     asJson = kwargs.get("asJson", False)
 
-    days = get_day(None)
-    temp = get_temp(None) 
-    info = get_info(None)
-
+    days = get_element("time", None)
+    temp = get_element("hiTemp", None)
+    info = get_element("summary", None)
+    loTemp = get_element("loTemp", None)
+    
     
     items = []
     json_items = {}
 
     if asJson == True:
-        print("hello")
         for i in range(0, 8):
             new_date = today + timedelta(days=i)
             format = "%d.%m.%Y"
@@ -43,7 +54,10 @@ def return_days(**kwargs):
                 "day": days[i],
                 "temp": temp[i],
                 "condition": info[i],
-                "date": result
+                "date": result,
+                "loTemp": loTemp[i],
+                "intTempHi": temp[i][:-2],
+                "intTempLo": loTemp[i][:-2]
             }
             items.append(json_list)
     else:
@@ -52,45 +66,10 @@ def return_days(**kwargs):
             format = "%d.%m.%Y"
             result = new_date.strftime(format)
 
-            day_temp_info_result = [days[i], temp[i], info[i], result]
+            day_temp_info_result = [days[i], temp[i], info[i], result, loTemp[i]]
             items.append(day_temp_info_result)
-            # day_temp_info_result = {days[i], temp[i], info[i], result}
-            # items.append(day_temp_info_result)
-
-    # items = [str(x) for x in items]
 
     if when == None:
         return items
     else:
         return [items[when]]
-
-
-
-def get_day(num):
-    items = [
-        item.get_text(strip=True) for item in doc.find_all(class_="time")
-    ]
-    if num == None:
-        return items
-    else:
-        return items[num]
-    
-def get_temp(num):
-    items = [
-        item.get_text(strip=True) for item in doc.find_all(class_="hiTemp")
-    ]
-    if num == None:
-        return items
-    else:
-        return items[num]
-    
-def get_info(num):
-    items = [
-        item.get_text(strip=True) for item in doc.find_all(class_="summary")
-    ]
-    if num == None:
-        return items
-    else:
-        return items[num]
-
-# print(return_days(asJson=True))
