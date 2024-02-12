@@ -1,0 +1,37 @@
+from flask import Flask, render_template, request
+from flask_cors import CORS
+import weather_funcs
+ 
+ 
+# Initializing flask app
+app = Flask(__name__)
+CORS(app)
+ 
+# Route for seeing a data
+@app.route('/weather/current')
+def get_temp():
+    day = int(request.args.get('day'))
+    # Returning an api for showing in  reactjs
+    data = {
+        'day': f"{weather_funcs.return_days(when=day)[0][0]}",
+        'temp': f"{weather_funcs.return_days(when=day)[0][1]}",
+        'condition': f"{weather_funcs.return_days(when=day)[0][2]}",
+        'date': f"{weather_funcs.return_days(when=day)[0][3]}"
+        }
+    return data
+
+@app.route('/weather/all')
+def get_all():
+    return weather_funcs.return_days(asJson=True)
+
+@app.errorhandler(404)
+def not_found(e):
+    possible_fetches = {
+        "/weather/current?day=": "Aufrufen und erhalten des Wetters an Tag day",
+        "/weather/all": "Erhalten aller Wetterdaten der nächsten 7 Tage"
+    }
+    return possible_fetches
+
+# print(weather_funcs.return_days(when=0)[0][2])
+app.run(debug=True)
+# app.run(debug=False, host="localhost", port=8080)
