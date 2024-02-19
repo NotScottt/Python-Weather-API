@@ -33,6 +33,7 @@ def show_index():
 
 @app.errorhandler(404)
 def not_found(e):
+    app.logger.error("Requested ressource not found!")
     return render_template('notFound.html'), 404
 
 def start_server(host_ip, port_num):
