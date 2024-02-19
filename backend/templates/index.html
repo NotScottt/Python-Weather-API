@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/style.css') }}">
+    <title>Weather API</title>
+</head>
+<body>
+    <div id="main_content">
+        <h1>Weather API</h1>
+
+        <table id="main_table" class="center">
+            <tr>
+                <td><a href="/weather/all">/weather/all</a></td>
+                <td>Displays all Weather data</td>
+            </tr>
+            <tr>
+                <td><a href="/weather/infos/all">/weather/infos/all</a></td>
+                <td>Displays all Weather data with infos</td>
+            </tr>
+            <tr>
+                <td><a href="/weather/current?day=0">/weather/current?day=0</a></td>
+                <td>Displays all Weather Data for specific day. Change the day parameter (0-7)</td>
+            </tr>
+        </table>
+    </div>
+    
+</body>
+</html>
