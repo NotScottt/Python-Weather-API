@@ -6,6 +6,9 @@ import sys
 default_ip = "127.0.0.1"
 default_port = "5000"
 
+print("Scott's Weather API - Service")
+print("-----------------------------\n")
+
 start = input("Start server?: ")
 if start == "y":
     ip_string = input("Enter ip-address (leave blank for default): ")
