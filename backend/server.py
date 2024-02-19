@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request
 from flask_cors import CORS
 import weather_funcs
- 
- 
+
 # Initializing flask app
 app = Flask(__name__)
 CORS(app)
@@ -21,17 +20,23 @@ def get_temp():
     return data
 
 @app.route('/weather/all')
-def get_all():
+def get_all_weather():
     return weather_funcs.return_days(asJson=True)
+
+@app.route('/weather/infos/all')
+def get_all_infos():
+    return weather_funcs.get_all_infos()
+
+@app.route("/")
+def show_index():
+    return render_template('index.html')
 
 @app.errorhandler(404)
 def not_found(e):
-    possible_fetches = {
-        "/weather/current?day=": "Aufrufen und erhalten des Wetters an Tag day",
-        "/weather/all": "Erhalten aller Wetterdaten der nächsten 7 Tage"
-    }
-    return possible_fetches
+    app.logger.error("Requested ressource not found!")
+    return render_template('notFound.html'), 404
 
-# print(weather_funcs.return_days(when=0)[0][2])
-app.run(debug=True)
-# app.run(debug=False, host="localhost", port=8080)
+def start_server(host_ip, port_num):
+    app.run(debug=True, host=host_ip, port=port_num, use_reloader=False)
+
+# app.run(debug=True)

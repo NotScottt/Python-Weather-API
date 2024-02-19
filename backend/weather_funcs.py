@@ -39,11 +39,9 @@ def return_days(**kwargs):
     temp = get_element("hiTemp", None)
     info = get_element("summary", None)
     loTemp = get_element("loTemp", None)
-    
-    
-    items = []
-    json_items = {}
+    infos_list = get_all_infos()
 
+    items = []
     if asJson == True:
         for i in range(0, 8):
             new_date = today + timedelta(days=i)
@@ -57,9 +55,14 @@ def return_days(**kwargs):
                 "date": result,
                 "loTemp": loTemp[i],
                 "intTempHi": temp[i][:-2],
-                "intTempLo": loTemp[i][:-2]
+                "intTempLo": loTemp[i][:-2],   
             }
+
+            json_list.update(infos_list[i])
             items.append(json_list)
+
+    
+
     else:
         for i in range(0, 8):
             new_date = today + timedelta(days=i)
@@ -73,3 +76,47 @@ def return_days(**kwargs):
         return items
     else:
         return [items[when]]
+
+
+
+def liste_abbrechen(original_liste, schrittweite):
+    resultierende_liste = []
+    teil_liste = []
+
+    for i, element in enumerate(original_liste, start=1):
+        teil_liste.append(element)
+        if i % schrittweite == 0:
+            resultierende_liste.append(teil_liste)
+            teil_liste = []
+
+    if teil_liste:
+        resultierende_liste.append(teil_liste)
+    return resultierende_liste
+
+
+def liste_in_dict(liste):
+    ergebnis = []
+
+    for eintrag in liste:
+        eintrag_dict = {}
+        for element in eintrag:
+            key, value = element.split(': ')
+            eintrag_dict[key] = value
+        ergebnis.append(eintrag_dict)
+
+    return ergebnis
+
+
+def get_all_infos():
+    span_elements = doc.select('div.more-details span')
+    span_list = []
+
+    for span in span_elements:
+        span_list.append(span.text)
+    
+    result_list = liste_abbrechen(span_list, 8)
+    list_dict = liste_in_dict(result_list)
+    return list_dict
+
+
+# for hourItem in doc.find_all('div',  attrs={'class': 'hourly'})
